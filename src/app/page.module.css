@@ -1,7 +1,7 @@
 .page {
   justify-items: center;  
   font-family: Sen, sans-serif;
-  width: 100vw;
+  height: 100vh;
 }
 
 .header {
@@ -14,15 +14,6 @@
   position: sticky;
   margin-bottom: 15rem;
   box-shadow: 12px 12px 20px 2px rgba(0, 0, 0, 0.05);
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem; 
-  justify-items: center;
-  padding: 2rem;
-  margin: 4rem;
 }
 
 .main h1 {
@@ -38,6 +29,10 @@
   margin-bottom: 1.5rem;
 }
 
+.buttons {
+    display:flex;
+    gap: 2rem;
+}
 .main button {
   background-color: #1C4122;
   color: white;
@@ -46,6 +41,7 @@
   border-radius: 1rem;
   border: none;
   transition: transform 0.6s ease;
+  width: 100%;
 }
 
 .main button:hover {
