@@ -1,0 +1,121 @@
+.header {
+  background-color: #C8DFC4;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  font-family: sans-serif;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  margin: 0;
+}
+
+.logoText {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.links a {
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: #1C4122;
+}
+
+.links .ant-btn {
+  background-color: #1C4122;
+  border: none;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 0.3rem;
+  height: auto;
+  transition: background-color 0.3s ease;
+}
+
+.links .ant-btn:hover {
+  background-color: #c0392b;
+}
+
+
+.logoutButton {
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
+  padding: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logoutButton:hover {
+  background-color: #c0392b;
+}
+.menuIcon {
+  display: none;
+  cursor: pointer;
+  color: #000000;
+}
+
+.close {
+    font-size: 1rem;
+}
+
+.menu {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .menuIcon {
+    display: block;
+  }
+
+  .links {
+    position: absolute;
+    top: 5.5rem;
+    right: 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #C8DFC4;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    gap: 1rem;
+    display: none;
+    z-index: 999;
+  }
+
+  .links.open {
+    display: flex;
+  }
+}
