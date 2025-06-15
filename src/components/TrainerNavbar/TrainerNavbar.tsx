@@ -33,8 +33,8 @@ const TrainerNavbar: React.FC = () => {
         </div>
 
         <nav className={`${styles.links} ${menuOpen ? styles.open : ''}`}>
-          <a onClick={() => { router.push('/clients'); closeMenu(); }}>Clients</a>
-          <a onClick={() => { router.push('/meal-plans'); closeMenu(); }}>Meal Plans</a>
+          <a onClick={() => { router.push('/trainer/home'); closeMenu(); }}>Clients</a>
+          <a onClick={() => { router.push('/trainer/meal-plans'); closeMenu(); }}>Meal Plans</a>
           <a onClick={() => { router.push('/food-items'); closeMenu(); }}>Food Items</a>
           <Button onClick={() => { router.push('/logout'); closeMenu(); }}>Logout</Button>
         </nav>
