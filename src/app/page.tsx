@@ -4,6 +4,7 @@ export default function Home() {
       <h1>NutriCoach</h1>
       <button>Trainer</button>
       <button>Client</button>
+      <h1>RS</h1>
     </>
   );
 }
