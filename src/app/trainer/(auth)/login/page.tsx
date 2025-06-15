@@ -5,14 +5,20 @@ import { Button, Form, Input, Typography } from 'antd';
 import { useStyles } from "../register/style";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const RegisterTrainer: React.FC = () => {
 
     const { styles } = useStyles()
+    const router = useRouter()
 
     type FieldType = {
         email: string;
         password: string;
+    }
+
+    const handleLogin = () => {
+        router.push('/trainer/home')
     }
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
@@ -61,7 +67,7 @@ const RegisterTrainer: React.FC = () => {
                 </div>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className={styles.Submit}>
+                    <Button onClick={handleLogin} type="primary" htmlType="submit" className={styles.Submit}>
                         Sign Up
                     </Button>
                 </Form.Item>
