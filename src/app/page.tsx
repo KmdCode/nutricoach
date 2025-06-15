@@ -1,5 +1,5 @@
 'use client'
-import NavBar from "@/components/Navbar";
+import NavBar from "@/components/navbar/Navbar";
 import styles from "./page.module.css";
 
 const LandingPage = () => {

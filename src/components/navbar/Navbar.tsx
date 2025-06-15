@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./styles/NavBar.module.css";
+import styles from "./Navbar.module.css"
 import React from "react";
 
 const NavBar: React.FC = () => {
