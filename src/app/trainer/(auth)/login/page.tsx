@@ -68,7 +68,7 @@ const RegisterTrainer: React.FC = () => {
 
                 <Form.Item>
                     <Button onClick={handleLogin} type="primary" htmlType="submit" className={styles.Submit}>
-                        Sign Up
+                        Login
                     </Button>
                 </Form.Item>
                 <Link href={'register'}>

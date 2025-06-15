@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { Row, Col, Card, Button } from 'antd';
+import { Row, Col, Card, Button, Typography } from 'antd';
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
@@ -45,6 +45,9 @@ const TrainerHomepage: React.FC = () => {
             <div className={styles.Container}>
                 
                 <SearchBar />
+                <div>
+                    <Typography className={styles.Typography}>Clients</Typography>
+                </div>
                 <div>
                     <Button className={styles.NewClient}> Add new client</Button>
                 </div>
