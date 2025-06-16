@@ -1,6 +1,6 @@
 "use client"
-import React from 'react';
-import { Row, Col, Card, Button, Typography } from 'antd';
+import React, { useState } from 'react';
+import { Row, Col, Card, Button, Typography, Modal, Form, Input, InputNumber } from 'antd';
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
@@ -9,6 +9,9 @@ import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
 const FoodItems: React.FC = () => {
     const router = useRouter();
     const { styles } = useStyles();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [form] = Form.useForm();
 
     type ItemType = {
         id: number;
@@ -32,10 +35,20 @@ const FoodItems: React.FC = () => {
         { id: 12, name: "Apple - Medium", category: "fruit", serving: 182 },
     ];
 
-
     const handleClick = () => {
         router.push('/trainer/login')
     }
+
+    const showModal = () => setIsModalVisible(true);
+
+    const handleCancel = () => {
+        form.resetFields();
+        setIsModalVisible(false);
+    };
+
+    const handleCreate = () => {
+        setIsModalVisible(false);
+    };
 
     return (
         <><TrainerNavbar />
@@ -46,7 +59,7 @@ const FoodItems: React.FC = () => {
                     <Typography className={styles.Typography}>Food Items</Typography>
                 </div>
                 <div>
-                    <Button className={styles.NewClient}> Add new Item</Button>
+                    <Button onClick={showModal} className={styles.NewClient}> Add new Item</Button>
                 </div>
 
                 <Row gutter={[16, 16]}>
@@ -67,6 +80,65 @@ const FoodItems: React.FC = () => {
                     ))}
                 </Row>
             </div>
+            <Modal
+                title="Add New Food Item"
+                open={isModalVisible}
+                onOk={handleCreate}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="cancel" onClick={handleCancel} className={styles.CancelButton}>
+                        Cancel
+                    </Button>,
+                    <Button key="submit" onClick={handleCreate} className={styles.Button}>
+                        Create
+                    </Button>,
+                ]}
+            >
+                <Form layout="vertical" form={form}>
+                    <Form.Item
+                        label="Name"
+                        name="name"
+                        rules={[{ required: true, message: "Please enter the name" }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Protein (g)"
+                        name="protein"
+                        rules={[{ required: true, message: "Please enter protein value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Carbs (g)"
+                        name="carbs"
+                        rules={[{ required: true, message: "Please enter carbs value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Sugar (g)"
+                        name="sugar"
+                        rules={[{ required: true, message: "Please enter sugar value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Fat (g)"
+                        name="fat"
+                        rules={[{ required: true, message: "Please enter fat value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Sodium (mg)"
+                        name="sodium"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </>
     );
 }

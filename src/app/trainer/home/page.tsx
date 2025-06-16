@@ -37,7 +37,7 @@ const TrainerHomepage: React.FC = () => {
     ];
 
     const handleClick = () => {
-        router.push('/trainer/login')
+        router.push('/trainer/client-details')
     }
 
     return (

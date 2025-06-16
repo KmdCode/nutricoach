@@ -1,17 +1,17 @@
 "use client"
-import React from 'react';
-import { Row, Col, Card, Button, Typography } from 'antd';
+import React, { useState } from 'react';
+import { Row, Col, Card, Button, Typography, Modal, Form, Input, Select } from 'antd';
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
 import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
 
-
 const MealPlans: React.FC = () => {
-
+    const router = useRouter();
     const { styles } = useStyles();
 
-    const router = useRouter();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [form] = Form.useForm();
 
     type planType = {
         id: number;
@@ -35,9 +35,39 @@ const MealPlans: React.FC = () => {
         { id: 12, name: "DASH Diet", clientName: "Kagiso", description: "Heart-healthy plan to manage blood pressure" }
     ];
 
+    const clients = [
+        {
+            id: 1,
+            fullName: "Karabo",
+            email: "test1@email.com",
+        },
+        {
+            id: 2,
+            fullName: "Modise",
+            email: "Test2@email.com",
+        },
+    ];
+
+    const foodItems = [
+        { id: 1, name: "Oats" },
+        { id: 2, name: "Chicken fillet - Skinless - Cooked" },
+        { id: 3, name: "Potato - Cooked" },
+    ];
+
     const handleClick = () => {
         router.push('/trainer/meal-plans/meal-plan')
     }
+
+    const showModal = () => setIsModalVisible(true);
+
+    const handleCancel = () => {
+        form.resetFields();
+        setIsModalVisible(false);
+    };
+
+    const handleCreate = () => {
+        setIsModalVisible(false);
+    };
 
     return (
         <><TrainerNavbar />
@@ -47,7 +77,7 @@ const MealPlans: React.FC = () => {
                     <Typography className={styles.Typography}>Meal Plans</Typography>
                 </div>
                 <div>
-                    <Button className={styles.NewClient}> Create meal plan</Button>
+                    <Button onClick={showModal} className={styles.NewClient}> Create meal plan</Button>
                 </div>
                 <Row gutter={[16, 16]}>
                     {mealPlans.map((plan) => (
@@ -66,6 +96,90 @@ const MealPlans: React.FC = () => {
                     ))}
                 </Row>
             </div>
+            <Modal
+                title="Add New Food Item"
+                open={isModalVisible}
+                onOk={handleCreate}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="cancel" onClick={handleCancel} className={styles.CancelButton}>
+                        Cancel
+                    </Button>,
+                    <Button key="submit" onClick={handleCreate} className={styles.Button}>
+                        Create
+                    </Button>,
+                ]}
+            >
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        name="planName"
+                        label="Meal Plan Name"
+                        rules={[{ required: true, message: "Please enter a meal plan name" }]}
+                    >
+                        <Input placeholder="e.g. Weight Loss Plan" />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="client"
+                        label="Client"
+                        rules={[{ required: true, message: "Please select a client" }]}
+                    >
+                        <Select placeholder="Select a client">
+                            {clients.map((client) => (
+                                <Select.Option key={client.id} value={client.id}>
+                                    {client.fullName}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.List name="meals">
+                        {(fields, { add }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <Card key={key} style={{ marginBottom: 16 }}>
+                                        <Row gutter={16}>
+                                            <Col span={10}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, 'mealName']}
+                                                    label="Meal Name"
+                                                    rules={[{ required: true, message: 'Enter meal name' }]}
+                                                >
+                                                    <Input placeholder="e.g. Brunch" />
+                                                </Form.Item>
+                                            </Col>
+
+                                            <Col span={12}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, 'items']}
+                                                    label="Select Items"
+                                                    rules={[{ required: true, message: 'Select at least one item' }]}
+                                                >
+                                                    <Select mode="multiple" placeholder="Choose items">
+                                                        {foodItems.map((item) => (
+                                                            <Select.Option key={item.id} value={item.id}>
+                                                                {item.name}
+                                                            </Select.Option>
+                                                        ))}
+                                                    </Select>
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                ))}
+
+                                <Form.Item>
+                                    <Button type="dashed" onClick={() => add()} block>
+                                         Add Meal
+                                    </Button>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
+                </Form>
+            </Modal>
         </>
     );
 };
