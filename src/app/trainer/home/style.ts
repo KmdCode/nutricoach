@@ -4,7 +4,7 @@ export const useStyles = createStyles({
     Container: css`
         margin: 4rem;
     `,
-    Button: css `
+    Button: css`
         background-color: #1C4122;
         color: #ffffff;
     `,
@@ -12,7 +12,7 @@ export const useStyles = createStyles({
         background-color: #A9CFB9;
         width:100%; 
     `,
-     NewClient: css `
+    NewClient: css`
         background-color: #1C4122;
         color: #ffffff;
         margin-bottom: 1rem;
@@ -21,5 +21,12 @@ export const useStyles = createStyles({
         font-size: 2rem;
         font-weight: 300;
         margin: 1rem 0;
+    `,
+    CancelButton: css`
+        background-color: #000000;
+        color: #ffffff;
+    `,
+    Input: css`
+        width: 100%;
     `
 })
