@@ -1,17 +1,19 @@
 "use client"
-import React from 'react';
-import { Row, Col, Card, Button, Typography } from 'antd';
+import React, {useState} from 'react';
+import { Row, Col, Card, Button, Typography, Modal, Form, Input } from 'antd';
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
 import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
-
 
 const TrainerHomepage: React.FC = () => {
 
     const { styles } = useStyles();
 
     const router = useRouter();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [form] = Form.useForm();
 
     type userType = {
         id?: number;
@@ -40,6 +42,17 @@ const TrainerHomepage: React.FC = () => {
         router.push('/trainer/client-details')
     }
 
+    const showModal = () => setIsModalVisible(true);
+
+    const handleCancel = () => {
+        form.resetFields();
+        setIsModalVisible(false);
+    };
+
+    const handleCreate = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <><TrainerNavbar/>
             <div className={styles.Container}>
@@ -49,7 +62,7 @@ const TrainerHomepage: React.FC = () => {
                     <Typography className={styles.Typography}>Clients</Typography>
                 </div>
                 <div>
-                    <Button className={styles.NewClient}> Add new client</Button>
+                    <Button onClick={showModal} className={styles.NewClient}> Add new client</Button>
                 </div>
 
                 <Row gutter={[16, 16]}>
@@ -71,6 +84,51 @@ const TrainerHomepage: React.FC = () => {
                     ))}
                 </Row>
             </div>
+            <Modal
+                title="Add New New Client"
+                open={isModalVisible}
+                onOk={handleCreate}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="cancel" onClick={handleCancel} className={styles.CancelButton}>
+                        Cancel
+                    </Button>,
+                    <Button key="submit" onClick={handleCreate} className={styles.Button}>
+                        Create
+                    </Button>,
+                ]}
+            >
+                <Form layout="vertical" form={form}>
+                    <Form.Item
+                        label="Name"
+                        name="fullName"
+                        rules={[{ required: true, message: "Please enter client name" }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Client Email"
+                        name="email"
+                        rules={[{ required: true, message: "Please enter client email" }]}
+                    >
+                        <Input className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Client Phone Number"
+                        name="contactNumber"
+                        rules={[{ required: true, message: "Please enter client phone number" }]}
+                    >
+                        <Input className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Gender"
+                        name="sex"
+                        rules={[{ required: true, message: "Please enter client gender" }]}
+                    >
+                        <Input className={styles.Input} />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </>
     );
 };
