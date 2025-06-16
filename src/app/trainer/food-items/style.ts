@@ -21,5 +21,12 @@ export const useStyles = createStyles({
         font-size: 2rem;
         font-weight: 300;
         margin: 1rem 0;
+    `,
+    CancelButton: css `
+        background-color: #000000;
+        color: #ffffff;
+    `,
+    Input: css `
+        width: 100%;
     `
 })
