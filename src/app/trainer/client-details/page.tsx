@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React from "react";
 import { Card, Typography, Divider } from "antd";
 import { useStyles } from "./style";

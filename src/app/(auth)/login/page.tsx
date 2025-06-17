@@ -5,27 +5,34 @@ import { Button, Form, Input, Typography } from 'antd';
 import { useStyles } from "../register/style";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useAuthActions, useAuthState } from "@/providers/authProvider";
+import { IUser } from "@/providers/authProvider/context";
 
-const RegisterTrainer: React.FC = () => {
+const LoginTrainer: React.FC = () => {
 
-    const { styles } = useStyles()
-    const router = useRouter()
+    const { styles } = useStyles();
+    const {loginUser} = useAuthActions();
+    const {isPending, isError} = useAuthState();
 
-    type FieldType = {
-        email: string;
-        password: string;
+    if(isPending){
+        return( <div>Loading...</div>)
     }
-
-    const handleLogin = () => {
-        router.push('/trainer/home')
+    if(isError){
+        return( <div>Error registering user</div>)
     }
+    
 
-    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    const onFinish: FormProps<IUser>['onFinish'] = (values) => {
         console.log('Success:', values);
+        const newUser: IUser = {
+            email: values.email,
+            password: values.password
+        }
+        loginUser(newUser)
+        
     };
 
-    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    const onFinishFailed: FormProps<IUser>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
@@ -50,14 +57,14 @@ const RegisterTrainer: React.FC = () => {
                 <Typography className={styles.Text}>Trainer Login </Typography>
                 <div className={styles.FormItems}>
 
-                    <Form.Item<FieldType>
+                    <Form.Item<IUser>
                         name="email"
                         rules={[{ required: true, message: 'Please input your email' }]}
                     >
                         <Input placeholder="Email" className={styles.Input} />
                     </Form.Item>
                    
-                    <Form.Item<FieldType>
+                    <Form.Item<IUser>
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
@@ -67,7 +74,7 @@ const RegisterTrainer: React.FC = () => {
                 </div>
 
                 <Form.Item>
-                    <Button onClick={handleLogin} type="primary" htmlType="submit" className={styles.Submit}>
+                    <Button type="primary" htmlType="submit" className={styles.Submit}>
                         Login
                     </Button>
                 </Form.Item>
@@ -81,4 +88,4 @@ const RegisterTrainer: React.FC = () => {
     )
 }
 
-export default RegisterTrainer;
+export default LoginTrainer;
