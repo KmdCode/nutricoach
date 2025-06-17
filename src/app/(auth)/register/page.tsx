@@ -5,24 +5,42 @@ import { Button, Form, Input, Typography } from 'antd';
 import { useStyles } from "./style";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuthActions, useAuthState } from "@/providers/authProvider";
+import { IUser } from "@/providers/authProvider/context";
 
-const LoginTrainer: React.FC = () => {
+const RegisterTrainer: React.FC = () => {
 
-    const { styles } = useStyles()
+    const { styles } = useStyles();
+    const {registerTrainer} = useAuthActions();
+    const {isPending, isError} = useAuthState();
 
-    type FieldType = {
-        username: string;
-        email: string;
-        contactNumber: number;
-        password: string;
-        confirmPassword: string;
+    if(isPending){
+        return( <div>Loading...</div>)
+    }
+    if(isError){
+        return( <div>Error registering user</div>)
     }
 
-    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        console.log('Success:', values);
+
+    const onFinish: FormProps<IUser>['onFinish'] = (values) => {
+        // console.log('Success:', values);
+        const newUser: IUser = {
+            name: values.name,
+            email: values.email,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+            role: "admin",
+            contactNumber: "12345678",
+            planType: "base",
+            activeStatus: true,
+            trial: false,
+            policiesAccepted:true
+        }
+        console.log(newUser)
+        registerTrainer(newUser)
     };
 
-    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    const onFinishFailed: FormProps<IUser>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
@@ -46,32 +64,32 @@ const LoginTrainer: React.FC = () => {
                 <Typography className={styles.Typography}>NutriCoach</Typography>
                 <Typography className={styles.Text}>Trainer Registration </Typography>
                 <div className={styles.FormItems}>
-                    <Form.Item<FieldType>
-                        name="username"
+                    <Form.Item<IUser>
+                        name="name"
                         rules={[{ required: true, message: 'Please input your username'}]}
                     >
                         <Input placeholder="Username" className={styles.Input} />
                     </Form.Item>
 
-                    <Form.Item<FieldType>
+                    <Form.Item<IUser>
                         name="email"
                         rules={[{ required: true, message: 'Please input your email' }]}
                     >
                         <Input placeholder="Email" className={styles.Input} />
                     </Form.Item>
-                    <Form.Item<FieldType>
+                    <Form.Item<IUser>
                         name="contactNumber"
                         rules={[{ required: true, message: 'Please input your phone number'}]}
                     >
-                        <Input type="number" placeholder="phone Number" className={styles.Input} />
+                        <Input placeholder="phone Number" className={styles.Input} />
                     </Form.Item>
-                    <Form.Item<FieldType>
+                    <Form.Item<IUser>
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
                         <Input.Password placeholder="Password" className={styles.Input} />
                     </Form.Item>
-                    <Form.Item<FieldType>
+                    <Form.Item<IUser>
                         name="confirmPassword"
                         rules={[{ required: true, message: 'Please confirm password!' }]}
                     >
@@ -94,4 +112,4 @@ const LoginTrainer: React.FC = () => {
     )
 }
 
-export default LoginTrainer;
+export default RegisterTrainer;

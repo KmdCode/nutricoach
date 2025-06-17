@@ -7,7 +7,7 @@ const LandingPage = () => {
   const router = useRouter();
 
   const handleTrainer = () => {
-    router.push('/trainer/register')
+    router.push('/register')
   }
 
   return (
