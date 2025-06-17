@@ -25,7 +25,7 @@ export interface IAuthStateContext {
 export interface IAuthActionContext {
     registerTrainer: (user: IUser) => void;
     loginUser: (user: IUser) => void;
-    // registerClient: (user:IUser) => void;
+    registerClient: (user:IUser) => void;
     // loginClient: (user:IUser) => void;
 }
 

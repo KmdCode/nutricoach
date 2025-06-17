@@ -9,65 +9,88 @@ import {
     registerTrainerError,
     loginUserPending,
     loginUserSuccess,
-    loginUserError
+    loginUserError,
+    registerClientPending,
+    registerClientSuccess,
+    registerClientError
 } from "./actions";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 
-export const AuthProvider = ({children}:{children: React.ReactNode}) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
     const instance = axiosInstance();
     const router = useRouter()
 
     interface IToken {
-        id:string;
-        name?:string;
-        role:string;
-        features?:string[];
-        iat?:number;
+        id: string;
+        name?: string;
+        role: string;
+        features?: string[];
+        iat?: number;
         exp?: string;
     }
 
-    const registerTrainer = async(user: IUser) => {
+    const registerTrainer = async (user: IUser) => {
         dispatch(registerTrainerPending());
-        const endpoint:string = '/users/register';
+        const endpoint: string = '/users/register';
 
         await instance.post(endpoint, user)
-        .then((response) => {
-            dispatch(registerTrainerSuccess(response.data))
-            console.log("successfully registered")
-            
-            console.log(response.data)
-        }).catch((error) => {
-            dispatch(registerTrainerError())
-            console.log(error)
-            console.log(error.message)
-        })
+            .then((response) => {
+                dispatch(registerTrainerSuccess(response.data))
+                console.log("successfully registered")
+                console.log(response.data)
+            }).catch((error) => {
+                dispatch(registerTrainerError())
+                console.log(error)
+                console.log(error.message)
+            })
     }
 
     const loginUser = async (user: IUser) => {
         dispatch(loginUserPending());
-        const endpoint:string = '/users/login'
+        const endpoint: string = '/users/login'
 
         await instance.post(endpoint, user)
-        .then((response) => {
-            dispatch(loginUserSuccess(response.data));
-            sessionStorage.setItem('token', response.data.data.token);
-            const token = jwtDecode<IToken>(JSON.stringify(response.data.data.token));
-            
-            console.log(token)
-            sessionStorage.setItem('userRole', token.role);
-            sessionStorage.setItem('trainerId', token.id)
-            router.push('/trainer')
-        }).catch((error) => {
-            dispatch(loginUserError());
-            console.log(error.message);
-        })
+            .then((response) => {
+                dispatch(loginUserSuccess(response.data));
+                sessionStorage.setItem('token', response.data.data.token);
+                const token = jwtDecode<IToken>(JSON.stringify(response.data.data.token));
+
+                console.log(token)
+                sessionStorage.setItem('userRole', token.role);
+                sessionStorage.setItem('trainerId', token.id)
+                if (token.role === "admin") {
+                    router.push("/trainer");
+                } else if (token.role === "user") {
+                    router.push("/client");
+                } else {
+                    router.push("/login");
+                }
+            }).catch((error) => {
+                dispatch(loginUserError());
+                console.log(error.message);
+            })
     }
 
-    return(
+    const registerClient = async (user: IUser) => {
+        dispatch(registerClientPending())
+        const endpoint = '/users/register/mobile';
+
+        await instance.post(endpoint, user)
+            .then((response) => {
+                dispatch(registerClientSuccess(response.data))
+                router.push('/login')
+                console.log("successfully registered")
+            }).catch((error) => {
+                dispatch(registerClientError());
+                console.log(error.message)
+            })
+    }
+
+    return (
         <AuthStateContext.Provider value={state}>
-            <AuthActionContext.Provider value={{registerTrainer, loginUser}}>
+            <AuthActionContext.Provider value={{ registerTrainer, loginUser, registerClient }}>
                 {children}
             </AuthActionContext.Provider>
         </AuthStateContext.Provider>
@@ -76,7 +99,7 @@ export const AuthProvider = ({children}:{children: React.ReactNode}) => {
 
 export const useAuthState = () => {
     const context = useContext(AuthStateContext);
-    if(!context){
+    if (!context) {
         throw new Error('useAuthState must be used within a AuthProvider');
     }
     return context;
@@ -84,7 +107,7 @@ export const useAuthState = () => {
 
 export const useAuthActions = () => {
     const context = useContext(AuthActionContext);
-    if(!context){
+    if (!context) {
         throw new Error('useAuthActions must be used within a AuthProvider')
     }
     return context;
