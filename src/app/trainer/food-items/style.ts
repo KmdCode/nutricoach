@@ -28,5 +28,9 @@ export const useStyles = createStyles({
     `,
     Input: css `
         width: 100%;
+    `,
+    heading: css `
+        font-size: 0.8rem;
+        font-weight: 700;
     `
 })

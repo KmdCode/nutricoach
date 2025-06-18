@@ -1,25 +1,20 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, InputNumber } from 'antd';
-import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
-import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
 import { useFoodItemActions, useFoodItemState } from '@/providers/foodItemProvider';
 import { IFoodItem } from '@/providers/foodItemProvider/context';
+import Spinner from '@/components/spinner/Spinner';
 
 const FoodItems: React.FC = () => {
-    const router = useRouter();
+
     const { styles } = useStyles();
     const {createFood, getFoods} = useFoodItemActions();
-    const {foods} = useFoodItemState();
+    const {foods, isPending} = useFoodItemState();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
-
-    const handleClick = () => {
-        router.push('/trainer/login')
-    }
 
     useEffect(()=>{
         getFoods();
@@ -44,10 +39,15 @@ const FoodItems: React.FC = () => {
 
     };
 
-    return (
-        <><TrainerNavbar />
-            <div className={styles.Container}>
+    if(isPending){
+        return(
+            <Spinner/>
+        )
+    }
 
+    return (
+        <>
+            <div className={styles.Container}>
                 <SearchBar />
                 <div>
                     <Typography className={styles.Typography}>Food Items</Typography>
@@ -61,13 +61,11 @@ const FoodItems: React.FC = () => {
                         <Col key={item.id} xs={22} sm={12} md={8} lg={6}>
                             <Card
                                 hoverable
-                                onClick={handleClick}
                                 className={styles.Card}
                             >
-                                <h2>{item.name}</h2>
+                                <h2 className={styles.heading}>{item.name}</h2>
                                 <p>{item.category}</p>
                                 <p>{item.servingSize}</p>
-                                <Button className={styles.Button}>View Item</Button>
                             </Card>
 
                         </Col>

@@ -1,5 +1,6 @@
 "use client"
 import withAuth from "@/hoc/withAuth";
+import TrainerNavbar from "@/components/TrainerNavbar/TrainerNavbar";
 
 const Trainer =({
     children,
@@ -8,6 +9,7 @@ const Trainer =({
 }>)=> {
     return (
         <>
+            <TrainerNavbar/>
             { children }
         </>
     );
