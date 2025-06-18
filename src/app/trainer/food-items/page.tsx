@@ -1,43 +1,29 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, InputNumber } from 'antd';
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
 import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
+import { useFoodItemActions, useFoodItemState } from '@/providers/foodItemProvider';
+import { IFoodItem } from '@/providers/foodItemProvider/context';
 
 const FoodItems: React.FC = () => {
     const router = useRouter();
     const { styles } = useStyles();
+    const {createFood, getFoods} = useFoodItemActions();
+    const {foods} = useFoodItemState();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
 
-    type ItemType = {
-        id: number;
-        name: string;
-        category: string;
-        serving: number;
-    }
-
-    const foodItems: ItemType[] = [
-        { id: 1, name: "Broccoli - Cooked", category: "veg", serving: 100 },
-        { id: 2, name: "Raspberries - Fresh", category: "fruit", serving: 100 },
-        { id: 3, name: "Sweet cinnamon bun", category: "grains", serving: 100 },
-        { id: 4, name: "Cheese spread ", category: "dairy", serving: 1 },
-        { id: 5, name: "Cod - Fried, breaded", category: "meat", serving: 100 },
-        { id: 6, name: "Almond milk - Unsweetened", category: "dairy", serving: 240 },
-        { id: 7, name: "Banana - Medium", category: "fruit", serving: 118 },
-        { id: 8, name: "Brown rice - Cooked", category: "grains", serving: 100 },
-        { id: 9, name: "Chicken breast - Grilled", category: "meat", serving: 100 },
-        { id: 10, name: "Spinach - Raw", category: "veg", serving: 30 },
-        { id: 11, name: "Greek yogurt - Plain", category: "dairy", serving: 150 },
-        { id: 12, name: "Apple - Medium", category: "fruit", serving: 182 },
-    ];
-
     const handleClick = () => {
         router.push('/trainer/login')
     }
+
+    useEffect(()=>{
+        getFoods();
+    },[''])
 
     const showModal = () => setIsModalVisible(true);
 
@@ -46,8 +32,16 @@ const FoodItems: React.FC = () => {
         setIsModalVisible(false);
     };
 
-    const handleCreate = () => {
-        setIsModalVisible(false);
+    const handleCreate = async() => {
+        try{
+            const values:IFoodItem = await form.validateFields()
+            const foodData:IFoodItem = values
+            createFood(foodData)
+            setIsModalVisible(false);
+        }catch (error){
+            console.log("Form validation failed:", error)
+        }
+
     };
 
     return (
@@ -63,7 +57,7 @@ const FoodItems: React.FC = () => {
                 </div>
 
                 <Row gutter={[16, 16]}>
-                    {foodItems.map((item) => (
+                    {foods?.map((item) => (
                         <Col key={item.id} xs={22} sm={12} md={8} lg={6}>
                             <Card
                                 hoverable
@@ -72,7 +66,7 @@ const FoodItems: React.FC = () => {
                             >
                                 <h2>{item.name}</h2>
                                 <p>{item.category}</p>
-                                <p>{item.serving}</p>
+                                <p>{item.servingSize}</p>
                                 <Button className={styles.Button}>View Item</Button>
                             </Card>
 
@@ -137,6 +131,49 @@ const FoodItems: React.FC = () => {
                     >
                         <InputNumber className={styles.Input} />
                     </Form.Item>
+                    <Form.Item
+                        label="Fibre (mg)"
+                        name="fiber"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Potassium (mg)"
+                        name="potassium"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Category"
+                        name="category"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <Input className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Serving Size"
+                        name="servingSize"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Cholesterol"
+                        name="cholesterol"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Energy"
+                        name="energy"
+                        rules={[{ required: true, message: "Please enter sodium value" }]}
+                    >
+                        <InputNumber className={styles.Input} />
+                    </Form.Item>
+                    
                 </Form>
             </Modal>
         </>
