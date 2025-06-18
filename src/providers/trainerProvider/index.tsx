@@ -3,9 +3,15 @@ import { useContext, useReducer } from "react";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { INITIAL_STATE, TrainerActionContext, TrainerStateContext } from "./context";
 import { TrainerReducer } from "./reducer";
-import { createClientPending, createClientSuccess, createClientError } from "./actions";
+import { 
+    createClientPending, 
+    createClientSuccess, 
+    createClientError,
+    getClientsPending,
+    getClientsSuccess,
+    getClientsError,
+} from "./actions";
 import { IUser } from "../authProvider/context";
-
 
 export const TrainerProvider = ({children}: {children:React.ReactNode}) => {
     const [state, dispatch] = useReducer(TrainerReducer, INITIAL_STATE);
@@ -15,7 +21,6 @@ export const TrainerProvider = ({children}: {children:React.ReactNode}) => {
         dispatch(createClientPending())
         const endpoint = '/client'
        
-
         await instance.post(endpoint,user)
         .then((response)=>{
             dispatch(createClientSuccess(response.data))
@@ -25,9 +30,27 @@ export const TrainerProvider = ({children}: {children:React.ReactNode}) => {
         })
     }
 
+    const getClients = async () => {
+        dispatch(getClientsPending());
+        const id = sessionStorage.getItem('trainerId');
+        console.log(id)
+        const endpoint = `/client/trainer/${id}/clients`;
+
+        await instance.get(endpoint)
+            .then((response) => {
+                dispatch(getClientsSuccess(response.data.data));
+                console.log(response.data.data);
+                sessionStorage.setItem('users', JSON.stringify(response.data.data))
+            })
+            .catch((error) => {
+                console.error(error);
+                dispatch(getClientsError());
+            });
+    };
+
     return(
         <TrainerStateContext.Provider value={state}>
-            <TrainerActionContext.Provider value={{createClient}}>
+            <TrainerActionContext.Provider value={{createClient, getClients}}>
                 {children}
             </TrainerActionContext.Provider>
         </TrainerStateContext.Provider>

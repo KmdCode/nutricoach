@@ -2,12 +2,15 @@ import { createContext } from "react";
 
 export interface IUser {
     trainerId?: string;
+    _id?:string;
     name?: string;
-    email: string;
-    password: string;
+    fullName?:string;
+    email?: string;
+    password?: string;
     confirmPassword?: string;
     dateOfBirth?: Date;
     role?: string;
+    sex?:string;
     contactNumber?: string;
     planType?: string;
     activeStatus?: boolean;
@@ -26,7 +29,6 @@ export interface IAuthActionContext {
     registerTrainer: (user: IUser) => void;
     loginUser: (user: IUser) => void;
     registerClient: (user:IUser) => void;
-    // loginClient: (user:IUser) => void;
 }
 
 export const INITIAL_STATE: IAuthStateContext = {
@@ -36,4 +38,4 @@ export const INITIAL_STATE: IAuthStateContext = {
 }
 
 export const AuthStateContext = createContext<IAuthStateContext>(INITIAL_STATE);
-export const AuthActionContext = createContext<IAuthActionContext>(undefined!)
+export const AuthActionContext = createContext<IAuthActionContext>(undefined!);
