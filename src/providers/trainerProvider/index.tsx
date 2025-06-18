@@ -19,7 +19,7 @@ export const TrainerProvider = ({children}: {children:React.ReactNode}) => {
     
     const createClient = async (user: IUser) => {
         dispatch(createClientPending())
-        const endpoint = '/client'
+        const endpoint = '/client';
        
         await instance.post(endpoint,user)
         .then((response)=>{
@@ -39,8 +39,6 @@ export const TrainerProvider = ({children}: {children:React.ReactNode}) => {
         await instance.get(endpoint)
             .then((response) => {
                 dispatch(getClientsSuccess(response.data.data));
-                console.log(response.data.data);
-                sessionStorage.setItem('users', JSON.stringify(response.data.data))
             })
             .catch((error) => {
                 console.error(error);
