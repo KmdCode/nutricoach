@@ -24,7 +24,12 @@ export enum AuthActionEnums {
 
     loginClientPending = "LOGIN_CLIENT_PENDING",
     loginClientSuccess = "LOGIN_CLIENT_SUCCESS",
-    loginClientError = "LOGIN_CLIENT_ERROR"
+    loginClientError = "LOGIN_CLIENT_ERROR",
+
+    //Current User
+    getCurrentUserPending = "GET_CURRENT_USER_PENDING",
+    getCurrentUserSuccess = "GET_CURRENT_USER_SUCCESS",
+    getCurrentUserError = "GET_CURRENT_USER_ERROR"
 }
 
 //Trainer Registration
@@ -156,3 +161,37 @@ export const loginClientError = createAction<IAuthStateContext>(
         }
     )
 )
+
+//Current User
+
+export const getCurrentUserPending = createAction<IAuthStateContext>(
+    AuthActionEnums.getCurrentUserPending, () => (
+        {
+            isPending: true,
+            isSuccess: false,
+            isError: false
+        }
+    )
+)
+
+export const getCurrentUserSuccess = createAction<IAuthStateContext, IUser>(
+    AuthActionEnums.getCurrentUserSuccess, (user: IUser) => (
+        {
+            isPending: false,
+            isSuccess: true,
+            isError: false,
+            user
+        }
+    )
+)
+
+export const getCurrentUserError = createAction<IAuthStateContext>(
+    AuthActionEnums.getCurrentUserError, () => (
+        {
+            isPending: false,
+            isSuccess: false,
+            isError: true
+        }
+    )
+)
+
