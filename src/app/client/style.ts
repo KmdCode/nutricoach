@@ -8,6 +8,7 @@ export const useStyles = createStyles(({ css }) => ({
     `,
     Card: css `
         width: 30rem;
+        background-color: #A9CFB9;
     `,
     Descriptions: css `
         font-weight: 500;
@@ -19,5 +20,8 @@ export const useStyles = createStyles(({ css }) => ({
         display: flex;
         justify-content: center;
         padding: 2rem;
-    `
+        .ant-spin-dot-item {
+        background-color: #1C4122;
+    }
+    `,
 }));

@@ -4,7 +4,6 @@ import { Row, Col, Card, Button, Typography, Modal, Form, Input, Select } from '
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
-import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
 
 const MealPlans: React.FC = () => {
     const router = useRouter();
@@ -70,7 +69,7 @@ const MealPlans: React.FC = () => {
     };
 
     return (
-        <><TrainerNavbar />
+        <>
             <div className={styles.Container}>
                 <SearchBar />
                 <div>

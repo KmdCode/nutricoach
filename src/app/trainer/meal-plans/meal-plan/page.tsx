@@ -2,7 +2,6 @@
 import React from 'react';
 import { Card, Typography, Divider } from 'antd';
 import { useStyles } from './style';
-import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
 
 const MealPlanPage: React.FC = () => {
     const { styles } = useStyles();
@@ -112,7 +111,6 @@ const MealPlanPage: React.FC = () => {
 
     return (
         <>
-            <TrainerNavbar />
             <div className={styles.container}>
                 <div className={styles.planHeader}>
                     <Title level={2}>{name}</Title>

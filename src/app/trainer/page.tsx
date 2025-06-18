@@ -1,17 +1,17 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, DatePicker } from 'antd';
-
 import { useStyles } from "./style";
 import SearchBar from '@/components/searchBar/SearchBar';
-import TrainerNavbar from '@/components/TrainerNavbar/TrainerNavbar';
 import { useTrainerActions, useTrainerState } from '@/providers/trainerProvider';
 import { IUser } from '@/providers/authProvider/context';
+import Spinner from '@/components/spinner/Spinner';
+
 
 const TrainerHomepage: React.FC = () => {
 
     const { styles } = useStyles();
-    const { clients } = useTrainerState();
+    const { clients, isPending } = useTrainerState();
     const { createClient, getClients } = useTrainerActions();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
@@ -45,8 +45,17 @@ const TrainerHomepage: React.FC = () => {
         }
     };
 
+    if(isPending){
+        return(
+            <>
+                <Spinner/>
+            </>
+
+        )
+    }
+
     return (
-        <><TrainerNavbar />
+        <>
             <div className={styles.Container}>
 
                 <SearchBar />
@@ -64,11 +73,10 @@ const TrainerHomepage: React.FC = () => {
                                 hoverable
                                 className={styles.Card}
                             >
-                                <h2>{user.fullName}</h2>
-                                <h2>0{user.contactNumber}</h2>
-                                <p>{user.email}</p>
-                                <p>{user.sex}</p>
-                                <Button className={styles.Button}>View Client</Button>
+                                <h2>Name: {user.fullName}</h2>
+                                <p>Phone Number: {user.contactNumber}</p>
+                                <p>Email: {user.email}</p>
+                                <p>Gender: {user.sex}</p>
                             </Card>
                         </Col>
                     ))}

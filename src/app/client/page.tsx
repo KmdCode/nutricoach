@@ -1,11 +1,10 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import { Card, Descriptions, Typography, Spin } from "antd";
+import { Card, Descriptions, Typography } from "antd";
 import { useStyles } from "./style";
 import ClientNavBar from "@/components/clientNavbar/ClientNavbar";
 import { useAuthActions, useAuthState } from "@/providers/authProvider";
-
+import Spinner from "@/components/spinner/Spinner";
 
 const ClientHomepage: React.FC = () => {
   const { Title } = Typography;
@@ -31,9 +30,7 @@ const ClientHomepage: React.FC = () => {
     return (
       <>
         <ClientNavBar />
-        <div className={styles.Spin}>
-          <Spin size="large" />
-        </div>
+        <Spinner/>
       </>
     );
   }
