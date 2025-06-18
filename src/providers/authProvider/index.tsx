@@ -12,7 +12,10 @@ import {
     loginUserError,
     registerClientPending,
     registerClientSuccess,
-    registerClientError
+    registerClientError,
+    getCurrentUserPending,
+    getCurrentUserSuccess,
+    getCurrentUserError
 } from "./actions";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
@@ -88,9 +91,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             })
     }
 
+    const getCurrentUser = async () => {
+        dispatch(getCurrentUserPending())
+        const endpoint = '/user/current'
+
+        await instance.get(endpoint)
+        .then((response)=>{
+            dispatch(getCurrentUserSuccess(response.data.data))
+            console.log(response.data.data);
+            sessionStorage.setItem("currentUser", JSON.stringify(response.data.data));
+
+        }).catch((error)=>{
+            dispatch(getCurrentUserError())
+            console.log(error)
+        })
+    }
+
     return (
         <AuthStateContext.Provider value={state}>
-            <AuthActionContext.Provider value={{ registerTrainer, loginUser, registerClient }}>
+            <AuthActionContext.Provider value={{ registerTrainer, loginUser, registerClient, getCurrentUser }}>
                 {children}
             </AuthActionContext.Provider>
         </AuthStateContext.Provider>
