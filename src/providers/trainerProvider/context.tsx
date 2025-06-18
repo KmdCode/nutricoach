@@ -1,16 +1,28 @@
 import { createContext } from "react";
 import { IUser } from "../authProvider/context";
 
-export interface ITrainerStateContext {
-    isPending: boolean;
-    isSuccess: boolean;
-    isError:boolean;
-    user?:IUser;
-    users?:IUser[];
+export interface IClient {
+    id?: string,
+    fullName?: string,
+    email?: string,
+    contactNumber?: string,
+    sex?: string,
+    dateOfBirth?: string,
+    activeState?: boolean,
+    trainerId?: string,
 }
 
 export interface ITrainerActionsContext {
     createClient: (user: IUser) => void;
+    getClients: () => void;
+}
+
+export interface ITrainerStateContext {
+    isPending: boolean,
+    isSuccess: boolean,
+    isError: boolean,
+    client?: IClient,
+    clients?: IClient[]
 }
 
 export const INITIAL_STATE: ITrainerStateContext = {

@@ -14,5 +14,17 @@ export const TrainerReducer = handleActions<ITrainerStateContext, ITrainerStateC
     [TrainerActionEnum.createClientError]: (state, action) => ({
         ...state,
         ...action.payload
+    }),
+    [TrainerActionEnum.getClientsPending]: (state, action) => ({
+        ...state,
+        ...action.payload
+    }),
+    [TrainerActionEnum.getClientsSuccess]: (state, action) => ({
+        ...state,
+        ...action.payload
+    }),
+    [TrainerActionEnum.getClientsError]: (state, action) => ({
+        ...state,
+        ...action.payload
     })
 }, INITIAL_STATE)
