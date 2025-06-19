@@ -13,6 +13,11 @@ const ClientNavBar: React.FC = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
 
+    const handleLogout = () => {
+    sessionStorage.clear()
+    router.push('/login')
+  }
+
 
   return (
     <header className={styles.header}>
@@ -33,9 +38,8 @@ const ClientNavBar: React.FC = () => {
         </div>
 
         <nav className={`${styles.links} ${menuOpen ? styles.open : ''}`}>
-          <a onClick={() => { router.push('/trainer'); closeMenu(); }}>Home</a>
-          <a onClick={() => { router.push('/trainer/meal-plans'); closeMenu(); }}>Meal Plans</a>
-          <Button onClick={() => { router.push('/'); closeMenu(); }}>Logout</Button>
+          <a onClick={() => { router.push('/client'); closeMenu(); }}>Home</a>
+          <Button onClick={() => { handleLogout(); closeMenu(); }}>Logout</Button>
         </nav>
       </div>
     </header>

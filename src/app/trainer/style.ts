@@ -28,5 +28,18 @@ export const useStyles = createStyles({
     `,
     Input: css`
         width: 100%;
-    `
+    `,
+    CustomModal: css`
+    .ant-modal-content {
+      background-color: #c8dfc4 
+    }
+
+    .ant-modal-header {
+      background-color: #c8dfc4
+    }
+
+    .ant-modal-title {
+      color: #000;
+    }
+  `
 })

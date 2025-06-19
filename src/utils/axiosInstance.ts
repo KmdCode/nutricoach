@@ -2,9 +2,10 @@ import axios from "axios";
 
 export const axiosInstance = () => {
   const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
+  const baseURL = process.env.NEXT_PUBLIC_API_LINK;
 
   return axios.create({
-    baseURL: "https://body-vault-server-b9ede5286d4c.herokuapp.com/api",
+    baseURL: baseURL,
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `${token}` } : {}),

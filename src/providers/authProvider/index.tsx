@@ -59,7 +59,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 sessionStorage.setItem('token', response.data.data.token);
                 const token = jwtDecode<IToken>(JSON.stringify(response.data.data.token));
 
-                console.log(token)
                 sessionStorage.setItem('userRole', token.role);
                 sessionStorage.setItem('trainerId', token.id)
                 if (token.role === "admin") {

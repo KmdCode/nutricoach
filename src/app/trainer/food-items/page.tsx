@@ -4,6 +4,7 @@ import { Row, Col, Card, Button, Typography, Modal, Form, Input, InputNumber, Pa
 import { useStyles } from "./style";
 import { useFoodItemActions, useFoodItemState } from "@/providers/foodItemProvider";
 import { IFoodItem } from "@/providers/foodItemProvider/context";
+import SearchBar from "@/components/searchBar/SearchBar";
 import Spinner from "@/components/spinner/Spinner";
 
 const FoodItems: React.FC = () => {
@@ -12,14 +13,21 @@ const FoodItems: React.FC = () => {
     const { foods, isPending } = useFoodItemState();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const [form] = Form.useForm();
 
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 8;
 
+
     useEffect(() => {
         getFoods();
     }, []);
+
+    const filteredFoods = foods?.filter(item =>
+        item.name?.toLowerCase().includes(searchTerm) ||
+        item.category?.toLowerCase().includes(searchTerm)
+    );
 
     const showModal = () => setIsModalVisible(true);
 
@@ -42,8 +50,14 @@ const FoodItems: React.FC = () => {
         setCurrentPage(page);
     };
 
-    const paginatedFoods = foods?.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const paginatedFoods = filteredFoods?.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const handleSearch = (value: string) => {
+        setSearchTerm(value.toLowerCase());
+    };
 
+    const handleChange = (value: string) => {
+        setSearchTerm(value.toLowerCase());
+    };
     if (isPending) {
         return <Spinner />;
     }
@@ -51,6 +65,7 @@ const FoodItems: React.FC = () => {
     return (
         <>
             <div className={styles.Container}>
+                <SearchBar onSearch={handleSearch} onChange={handleChange} />
                 <div>
                     <Typography className={styles.Typography}>Food Items</Typography>
                 </div>
@@ -95,6 +110,7 @@ const FoodItems: React.FC = () => {
 
             <Modal
                 title="Add New Food Item"
+                className={styles.CustomModal}
                 open={isModalVisible}
                 onOk={handleCreate}
                 onCancel={handleCancel}

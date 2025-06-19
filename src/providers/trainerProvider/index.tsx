@@ -33,7 +33,6 @@ export const TrainerProvider = ({children}: {children:React.ReactNode}) => {
     const getClients = async () => {
         dispatch(getClientsPending());
         const id = sessionStorage.getItem('trainerId');
-        console.log(id)
         const endpoint = `/client/trainer/${id}/clients`;
 
         await instance.get(endpoint)

@@ -27,7 +27,6 @@ const RegisterTrainer: React.FC = () => {
         return (<div>Error registering user</div>)
     }
 
-
     const onFinish: FormProps<IUser>['onFinish'] = (values) => {
         const newUser: IUser = {
             name: values.name,
@@ -41,7 +40,6 @@ const RegisterTrainer: React.FC = () => {
             trial: false,
             policiesAccepted: true
         }
-        console.log(newUser)
         registerTrainer(newUser)
     };
 
