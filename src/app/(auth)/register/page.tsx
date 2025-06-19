@@ -7,34 +7,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuthActions, useAuthState } from "@/providers/authProvider";
 import { IUser } from "@/providers/authProvider/context";
+import Spinner from "@/components/spinner/Spinner";
 
 const RegisterTrainer: React.FC = () => {
 
     const { styles } = useStyles();
-    const {registerTrainer} = useAuthActions();
-    const {isPending, isError} = useAuthState();
+    const { registerTrainer } = useAuthActions();
+    const { isPending, isError } = useAuthState();
 
-    if(isPending){
-        return( <div>Loading...</div>)
+    if (isPending) {
+        return (
+            <>
+                <Spinner />
+            </>
+
+        )
     }
-    if(isError){
-        return( <div>Error registering user</div>)
+    if (isError) {
+        return (<div>Error registering user</div>)
     }
 
 
     const onFinish: FormProps<IUser>['onFinish'] = (values) => {
-        // console.log('Success:', values);
         const newUser: IUser = {
             name: values.name,
             email: values.email,
             password: values.password,
             confirmPassword: values.confirmPassword,
             role: "admin",
-            contactNumber: "12345678",
+            contactNumber: values.contactNumber,
             planType: "base",
             activeStatus: true,
             trial: false,
-            policiesAccepted:true
+            policiesAccepted: true
         }
         console.log(newUser)
         registerTrainer(newUser)
@@ -60,13 +65,13 @@ const RegisterTrainer: React.FC = () => {
                     width={50}
                     height={50}
                     priority
-                /> 
+                />
                 <Typography className={styles.Typography}>NutriCoach</Typography>
                 <Typography className={styles.Text}>Trainer Registration </Typography>
                 <div className={styles.FormItems}>
                     <Form.Item<IUser>
                         name="name"
-                        rules={[{ required: true, message: 'Please input your username'}]}
+                        rules={[{ required: true, message: 'Please input your username' }]}
                     >
                         <Input placeholder="Username" className={styles.Input} />
                     </Form.Item>
@@ -79,7 +84,7 @@ const RegisterTrainer: React.FC = () => {
                     </Form.Item>
                     <Form.Item<IUser>
                         name="contactNumber"
-                        rules={[{ required: true, message: 'Please input your phone number'}]}
+                        rules={[{ required: true, message: 'Please input your phone number' }]}
                     >
                         <Input placeholder="phone Number" className={styles.Input} />
                     </Form.Item>

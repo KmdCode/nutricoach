@@ -32,5 +32,11 @@ export const useStyles = createStyles({
     heading: css `
         font-size: 0.8rem;
         font-weight: 700;
-    `
+    `,
+    Pagination: css `
+        text-align: center;
+        margin-top: 2rem;   
+    `,
+    PaginationButton: css`
+        `
 })
