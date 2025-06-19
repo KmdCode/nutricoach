@@ -41,8 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await instance.post(endpoint, user)
             .then((response) => {
                 dispatch(registerTrainerSuccess(response.data))
-                console.log("successfully registered")
-                console.log(response.data)
+                router.push('/login')
             }).catch((error) => {
                 dispatch(registerTrainerError())
                 console.log(error)
@@ -84,7 +83,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             .then((response) => {
                 dispatch(registerClientSuccess(response.data))
                 router.push('/login')
-                console.log("successfully registered")
             }).catch((error) => {
                 dispatch(registerClientError());
                 console.log(error.message)
@@ -98,7 +96,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await instance.get(endpoint)
         .then((response)=>{
             dispatch(getCurrentUserSuccess(response.data.data))
-            console.log(response.data.data);
             sessionStorage.setItem("currentUser", JSON.stringify(response.data.data));
 
         }).catch((error)=>{

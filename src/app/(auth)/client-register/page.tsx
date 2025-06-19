@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuthActions, useAuthState } from "@/providers/authProvider";
 import { IUser } from "@/providers/authProvider/context";
+import Spinner from "@/components/spinner/Spinner";
 
 const ClientRegister: React.FC = () => {
 
@@ -15,7 +16,12 @@ const ClientRegister: React.FC = () => {
     const {isPending, isError} = useAuthState();
 
     if(isPending){
-        return( <div>Loading...</div>)
+        return(
+            <>
+                <Spinner/>
+            </>
+
+        )
     }
     if(isError){
         return( <div>Error registering user</div>)
@@ -29,7 +35,7 @@ const ClientRegister: React.FC = () => {
             password: values.password,
             confirmPassword: values.confirmPassword,
             dateOfBirth: values.dateOfBirth,
-            contactNumber: "12345678",
+            contactNumber: values.contactNumber,
             policiesAccepted:true
         }
         console.log(newUser)

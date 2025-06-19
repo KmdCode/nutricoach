@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuthActions, useAuthState } from "@/providers/authProvider";
 import { IUser } from "@/providers/authProvider/context";
+import Spinner from "@/components/spinner/Spinner";
 
 const LoginTrainer: React.FC = () => {
 
@@ -15,7 +16,9 @@ const LoginTrainer: React.FC = () => {
     const {isPending, isError} = useAuthState();
 
     if(isPending){
-        return( <div>Loading...</div>)
+        return(
+            <Spinner/>
+        )
     }
     if(isError){
         return( <div>Error registering user</div>)
