@@ -1,4 +1,4 @@
-# MyGym
+# NutriCoach
 
 NutriCoach is a nutrition management platform designed for personal trainers and their clients. Trainers can easily create, assign, and manage client-specific meal plans, while clients can conveniently view and follow their personalized nutrition guidance. Built with Next.js, React, and TypeScript, NutriCoach delivers a seamless and responsive experience powered by an API
 
