@@ -22,8 +22,7 @@ export const FoodProvider = ({children}: {children:React.ReactNode}) => {
 
         await instance.post(endpoint, food)
         .then((response) => {
-            dispatch(createFoodSuccess(response.data.data))
-            console.log("food created")
+            dispatch(createFoodSuccess(response.data.data)) 
         }).catch((error) => {
             dispatch(createFoodError())
             console.log(error)
@@ -37,7 +36,6 @@ export const FoodProvider = ({children}: {children:React.ReactNode}) => {
             await instance.get(endpoint)
             .then((response)=>{
                 dispatch(getFoodsSuccess(response.data.data))
-                console.log(response.data.data)
             }).catch((error)=>{
                 dispatch(getFoodsError());
                 console.log(error)

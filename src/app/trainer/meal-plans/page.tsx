@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, Select } from 'antd';
 import { useRouter } from "next/navigation";
 import { useStyles } from "./style";
-import SearchBar from '@/components/searchBar/SearchBar';
 
 const MealPlans: React.FC = () => {
     const router = useRouter();
@@ -71,7 +70,6 @@ const MealPlans: React.FC = () => {
     return (
         <>
             <div className={styles.Container}>
-                <SearchBar />
                 <div>
                     <Typography className={styles.Typography}>Meal Plans</Typography>
                 </div>
