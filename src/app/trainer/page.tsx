@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, DatePicker } from 'antd';
 import { useStyles } from "./style";
-import SearchBar from '@/components/searchBar/SearchBar';
 import { useTrainerActions, useTrainerState } from '@/providers/trainerProvider';
 import { IUser } from '@/providers/authProvider/context';
 import Spinner from '@/components/spinner/Spinner';
@@ -19,8 +18,6 @@ const TrainerHomepage: React.FC = () => {
     useEffect(()=> {
         getClients();
     },[''])
-
-
 
     const showModal = () => setIsModalVisible(true);
 
@@ -57,8 +54,6 @@ const TrainerHomepage: React.FC = () => {
     return (
         <>
             <div className={styles.Container}>
-
-                <SearchBar />
                 <div>
                     <Typography className={styles.Typography}>Clients</Typography>
                 </div>

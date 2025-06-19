@@ -2,114 +2,112 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, InputNumber, Pagination } from "antd";
 import { useStyles } from "./style";
-import SearchBar from "@/components/searchBar/SearchBar";
 import { useFoodItemActions, useFoodItemState } from "@/providers/foodItemProvider";
 import { IFoodItem } from "@/providers/foodItemProvider/context";
 import Spinner from "@/components/spinner/Spinner";
 
 const FoodItems: React.FC = () => {
-  const { styles } = useStyles();
-  const { createFood, getFoods } = useFoodItemActions();
-  const { foods, isPending } = useFoodItemState();
+    const { styles } = useStyles();
+    const { createFood, getFoods } = useFoodItemActions();
+    const { foods, isPending } = useFoodItemState();
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [form] = Form.useForm();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 8;
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 8;
 
-  useEffect(() => {
-    getFoods();
-  }, []);
+    useEffect(() => {
+        getFoods();
+    }, []);
 
-  const showModal = () => setIsModalVisible(true);
+    const showModal = () => setIsModalVisible(true);
 
-  const handleCancel = () => {
-    form.resetFields();
-    setIsModalVisible(false);
-  };
+    const handleCancel = () => {
+        form.resetFields();
+        setIsModalVisible(false);
+    };
 
-  const handleCreate = async () => {
-    try {
-      const values: IFoodItem = await form.validateFields();
-      createFood(values);
-      setIsModalVisible(false);
-    } catch (error) {
-      console.log("Form validation failed:", error);
+    const handleCreate = async () => {
+        try {
+            const values: IFoodItem = await form.validateFields();
+            createFood(values);
+            setIsModalVisible(false);
+        } catch (error) {
+            console.log("Form validation failed:", error);
+        }
+    };
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const paginatedFoods = foods?.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    if (isPending) {
+        return <Spinner />;
     }
-  };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+    return (
+        <>
+            <div className={styles.Container}>
+                <div>
+                    <Typography className={styles.Typography}>Food Items</Typography>
+                </div>
+                <div>
+                    <Button onClick={showModal} className={styles.NewClient}>
+                        Add new Item
+                    </Button>
+                </div>
 
-  const paginatedFoods = foods?.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+                <Row gutter={[16, 16]}>
+                    {paginatedFoods?.map((item) => (
+                        <Col key={item.id} xs={22} sm={12} md={8} lg={6}>
+                            <Card hoverable className={styles.Card}>
+                                <h2 className={styles.heading}>{item.name}</h2>
+                                <p>Category: {item.category}</p>
+                                <p>Serving Size: {item.servingSize}</p>
+                                <p>Protein: {item.protein}g</p>
+                                <p>Carbs: {item.carbs}g</p>
+                                <p>Sugar: {item.sugar}g</p>
+                                <p>Fat: {item.fat}g</p>
+                                <p>Fiber: {item.fiber}g</p>
+                                <p>Sodium: {item.sodium}g</p>
+                                <p>Potassium: {item.potassium}g</p>
+                                <p>Cholesterol: {item.cholesterol}g</p>
+                                <p>Energy: {item.energy}g</p>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
 
-  if (isPending) {
-    return <Spinner />;
-  }
+                <div className={styles.Pagination}>
+                    <Pagination
+                        current={currentPage}
+                        pageSize={pageSize}
+                        total={foods?.length || 0}
+                        onChange={handlePageChange}
+                        showSizeChanger={false}
+                        className={styles.PaginationButton}
+                    />
+                </div>
+            </div>
 
-  return (
-    <>
-      <div className={styles.Container}>
-        <SearchBar />
-        <div>
-          <Typography className={styles.Typography}>Food Items</Typography>
-        </div>
-        <div>
-          <Button onClick={showModal} className={styles.NewClient}>
-            Add new Item
-          </Button>
-        </div>
-
-        <Row gutter={[16, 16]}>
-          {paginatedFoods?.map((item) => (
-            <Col key={item.id} xs={22} sm={12} md={8} lg={6}>
-              <Card hoverable className={styles.Card}>
-                <h2 className={styles.heading}>{item.name}</h2>
-                <p>Category: {item.category}</p>
-                <p>Serving Size: {item.servingSize}</p>
-                <p>Protein: {item.protein}g</p>
-                <p>Carbs: {item.carbs}g</p>
-                <p>Sugar: {item.sugar}g</p>
-                <p>Fat: {item.fat}g</p>
-                <p>Fiber: {item.fiber}g</p>
-                <p>Sodium: {item.sodium}g</p>
-                <p>Potassium: {item.potassium}g</p>
-                <p>Cholesterol: {item.cholesterol}g</p>
-                <p>Energy: {item.energy}g</p>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-
-        <div className={styles.Pagination}>
-          <Pagination
-            current={currentPage}
-            pageSize={pageSize}
-            total={foods?.length || 0}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-            className={styles.PaginationButton}
-          />
-        </div>
-      </div>
-
-      <Modal
-        title="Add New Food Item"
-        open={isModalVisible}
-        onOk={handleCreate}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="cancel" onClick={handleCancel} className={styles.CancelButton}>
-            Cancel
-          </Button>,
-          <Button key="submit" onClick={handleCreate} className={styles.Button}>
-            Create
-          </Button>,
-        ]}
-      >
-        <Form layout="vertical" form={form}>
+            <Modal
+                title="Add New Food Item"
+                open={isModalVisible}
+                onOk={handleCreate}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="cancel" onClick={handleCancel} className={styles.CancelButton}>
+                        Cancel
+                    </Button>,
+                    <Button key="submit" onClick={handleCreate} className={styles.Button}>
+                        Create
+                    </Button>,
+                ]}
+            >
+                <Form layout="vertical" form={form}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -194,11 +192,11 @@ const FoodItems: React.FC = () => {
                     >
                         <InputNumber className={styles.Input} />
                     </Form.Item>
-                    
+
                 </Form>
-      </Modal>
-    </>
-  );
+            </Modal>
+        </>
+    );
 };
 
 export default FoodItems;
