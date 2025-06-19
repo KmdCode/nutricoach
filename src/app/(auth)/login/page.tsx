@@ -26,7 +26,6 @@ const LoginTrainer: React.FC = () => {
     
 
     const onFinish: FormProps<IUser>['onFinish'] = (values) => {
-        console.log('Success:', values);
         const newUser: IUser = {
             email: values.email,
             password: values.password
@@ -57,7 +56,7 @@ const LoginTrainer: React.FC = () => {
                     priority
                 /> 
                 <Typography className={styles.Typography}>NutriCoach</Typography>
-                <Typography className={styles.Text}>Trainer Login </Typography>
+                <Typography className={styles.Text}> Login </Typography>
                 <div className={styles.FormItems}>
 
                     <Form.Item<IUser>

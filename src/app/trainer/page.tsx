@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Button, Typography, Modal, Form, Input, DatePicker } from 'antd';
 import { useStyles } from "./style";
+import SearchBar from '@/components/searchBar/SearchBar';
 import { useTrainerActions, useTrainerState } from '@/providers/trainerProvider';
 import { IUser } from '@/providers/authProvider/context';
 import Spinner from '@/components/spinner/Spinner';
@@ -13,11 +14,17 @@ const TrainerHomepage: React.FC = () => {
     const { clients, isPending } = useTrainerState();
     const { createClient, getClients } = useTrainerActions();
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const [form] = Form.useForm();
 
-    useEffect(()=> {
+    useEffect(() => {
         getClients();
-    },[''])
+    }, [])
+
+    const filteredClients = clients?.filter(client =>
+        client.fullName?.toLowerCase().includes(searchTerm) ||
+        client.email?.toLowerCase().includes(searchTerm)
+    );
 
     const showModal = () => setIsModalVisible(true);
 
@@ -30,10 +37,10 @@ const TrainerHomepage: React.FC = () => {
         try {
             const values: IUser = await form.validateFields();
             const trainerId = sessionStorage.getItem("trainerId") || "";
-            const clientData:IUser & { trainerId: string | null } = {
-            ...values,
-            trainerId,
-        };
+            const clientData: IUser & { trainerId: string | null } = {
+                ...values,
+                trainerId,
+            };
             createClient(clientData);
             form.resetFields();
             setIsModalVisible(false);
@@ -42,10 +49,17 @@ const TrainerHomepage: React.FC = () => {
         }
     };
 
-    if(isPending){
-        return(
+    const handleSearch = (value: string) => {
+        setSearchTerm(value.toLowerCase());
+    };
+    const handleChange = (value: string) => {
+    setSearchTerm(value.toLowerCase());
+};
+
+    if (isPending) {
+        return (
             <>
-                <Spinner/>
+                <Spinner />
             </>
 
         )
@@ -54,6 +68,7 @@ const TrainerHomepage: React.FC = () => {
     return (
         <>
             <div className={styles.Container}>
+                <SearchBar onSearch={handleSearch} onChange={handleChange}/>
                 <div>
                     <Typography className={styles.Typography}>Clients</Typography>
                 </div>
@@ -62,12 +77,9 @@ const TrainerHomepage: React.FC = () => {
                 </div>
 
                 <Row gutter={[16, 16]}>
-                    {clients?.map((user) => (
+                    {filteredClients?.map((user) => (
                         <Col key={user.id} xs={22} sm={12} md={8} lg={6}>
-                            <Card
-                                hoverable
-                                className={styles.Card}
-                            >
+                            <Card hoverable className={styles.Card}>
                                 <h2>Name: {user.fullName}</h2>
                                 <p>Phone Number: {user.contactNumber}</p>
                                 <p>Email: {user.email}</p>
@@ -78,7 +90,8 @@ const TrainerHomepage: React.FC = () => {
                 </Row>
             </div>
             <Modal
-                title="Add New New Client"
+                title="Add New Client"
+                className={styles.CustomModal}
                 open={isModalVisible}
                 onOk={handleCreate}
                 onCancel={handleCancel}
@@ -127,7 +140,7 @@ const TrainerHomepage: React.FC = () => {
                     >
                         <Input className={styles.Input} />
                     </Form.Item>
-                    
+
                 </Form>
             </Modal>
         </>

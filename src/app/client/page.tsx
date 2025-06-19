@@ -37,7 +37,6 @@ const ClientHomepage: React.FC = () => {
 
   return (
     <>
-      <ClientNavBar />
       <div className={styles.CardContainer}>
         <Card className={styles.Card}title={<Title level={4}>Profile Details</Title>}>
           <Descriptions column={1} className={styles.Descriptions}>

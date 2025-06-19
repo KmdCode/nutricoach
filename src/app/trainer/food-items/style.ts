@@ -38,5 +38,18 @@ export const useStyles = createStyles({
         margin-top: 2rem;   
     `,
     PaginationButton: css`
-        `
+    `,
+    CustomModal: css`
+    .ant-modal-content {
+      background-color: #c8dfc4 
+    }
+
+    .ant-modal-header {
+      background-color: #c8dfc4
+    }
+
+    .ant-modal-title {
+      color: #000;
+    }
+  `,
 })
